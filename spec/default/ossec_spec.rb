@@ -22,6 +22,7 @@ describe file("/var/ossec/.procmailrc") do
 end
   
 describe file("/var/ossec/send_encrypted_alarm.sh") do
+  it { should be_file }
   it { should be_mode '755' }
 end
 

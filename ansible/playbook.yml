@@ -1,0 +1,8 @@
+---
+- hosts: default
+  remote_user: vagrant
+  tasks:
+  - name: ensure procmail is installed
+    apt: pkg=procmail state=latest
+  - name: add in gpg encrypt script
+    template: src=/Users/cng/projects/securedrop/install_files/send_encrypted_alarm.sh dest=/var/ossec/send_encrypted_alarm.sh
