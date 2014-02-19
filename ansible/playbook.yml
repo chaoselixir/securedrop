@@ -1,8 +1,48 @@
 ---
 - hosts: default
   remote_user: vagrant
+  vars:
+    smtp_server: smtp.example.com
   tasks:
   - name: ensure procmail is installed
     apt: pkg=procmail state=latest
+
+  - name: create ossec user.
+    user: 
+      name=ossec 
+      password=password
+      state=present
+
+  - name: create OSSEC dirs.
+    file:
+      state=directory 
+      dest="/var/ossec" 
+      owner=ossec 
+      group=ossec 
+      mode=0744
+
   - name: add in gpg encrypt script
-    template: src=/Users/cng/projects/securedrop/install_files/send_encrypted_alarm.sh dest=/var/ossec/send_encrypted_alarm.sh
+    copy: 
+      src=/Users/cng/projects/securedrop/install_files/send_encrypted_alarm.sh
+      dest=/var/ossec/send_encrypted_alarm.sh
+      owner=ossec
+      group=ossec
+      mode=0755
+
+  - name: setup procmail.rc
+    copy:
+      src=/Users/cng/projects/securedrop/install_files/monitor.procmailrc
+      dest=/var/ossec/.procmailrc
+      owner=ossec
+      group=ossec
+      mode=0644
+
+  - name: setup postfix.cf
+    template:
+      src=/Users/cng/projects/securedrop/install_files/monitor.postfix-main.cf.j2
+      dest=/etc/postfix/main.cf
+
+
+
+
+
