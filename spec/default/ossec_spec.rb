@@ -18,6 +18,8 @@ describe file("/var/ossec/.gnupg") do
 end
 
 describe file("/var/ossec/.procmailrc") do
+  it { should be_owned_by 'ossec' }
+  it { should be_grouped_into 'ossec' }
   its(:content) { should match "/var/ossec/send_encrypted_alarm.sh" }
 end
   
@@ -29,4 +31,8 @@ end
 describe file("/var/log/procmail.log") do
   it { should be_owned_by "ossec" }
 end
-  
+ 
+describe file("/var/ossec/etc/ossec.conf") do
+    it { should be_file }
+    its(:content) { should match "<email_to>root@localhost/email_to>"}
+end
